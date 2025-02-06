@@ -1,0 +1,81 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+    Smart Parking Ticketing - Login
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+ </head>
+ <body class="flex h-screen">
+  <div class="w-1/2">
+   <img alt="Close-up of a parking ticket placed on a car windshield" class="h-full w-full object-cover" height="800" src="https://storage.googleapis.com/a1aa/image/IMt2ilRf0DTQIkAuKg1G3GvOTokylCE7c3eHc7xvtds.jpg" width="600"/>
+  </div>
+  <div class="w-1/2 flex items-center justify-center bg-white">
+   <div class="w-3/4">
+    <h1 class="text-3xl font-bold mb-2 text-center">
+        Smart Parking Ticketing
+    </h1>
+    <p class="text-lg mb-6 text-center">
+     Login into Admin account
+    </p>
+    <form action="login.php" method="POST">
+     <!-- This points to login.php -->
+     <div class="mb-4">
+      <label class="block text-gray-700" for="admin-id">
+       Admin ID:
+      </label>
+      <div class="flex items-center border border-gray-300 rounded-md">
+       <input class="w-full mt-1 p-2 border rounded-md bg-gray-100" id="admin-id" name="admin_id" placeholder="Enter your Admin ID" required="" type="text"/>
+       <span class="px-3 text-gray-500">
+        <i class="fas fa-envelope text-white bg-green-800 p-2 rounded-md ml-1">
+        </i>
+       </span>
+      </div>
+      <?php if (isset($_GET['admin_id_error'])): ?>
+      <p class="text-red-500 mt-1">
+       <?php echo htmlspecialchars($_GET['admin_id_error']); ?>
+      </p>
+      <!-- Error message for Admin ID -->
+      <?php endif; ?>
+     </div>
+     <div class="mb-6">
+      <label class="block text-gray-700" for="password">
+       Password:
+      </label>
+      <div class="flex items-center border border-gray-300 rounded-md">
+       <input class="w-full mt-1 p-2 border rounded-md bg-gray-100" id="password" name="password" placeholder="Enter your password" required="" type="password"/>
+       <span class="px-3 text-gray-500">
+        <i class="fas fa-lock text-white bg-green-800 p-2 rounded-md ml-1">
+        </i>
+       </span>
+      </div>
+      <?php if (isset($_GET['password_error'])): ?>
+      <p class="text-red-500 mt-1">
+       <?php echo htmlspecialchars($_GET['password_error']); ?>
+      </p>
+      <!-- Error message for Password -->
+      <?php endif; ?>
+     </div>
+     <button class="w-full bg-green-800 text-white py-2 rounded-md mb-4" type="submit">
+      Login now
+     </button>
+     <div class="flex items-center justify-center mb-4">
+      <hr class="w-1/4 border-gray-300"/>
+      <span class="px-2 text-gray-500">
+       OR
+      </span>
+      <hr class="w-1/4 border-gray-300"/>
+     </div>
+     <a href="signup.html">
+      <button class="w-full border border-green-800 text-green-800 py-2 rounded-md" type="button">
+       Signup now
+      </button>
+     </a>
+    </form>
+   </div>
+  </div>
+ </body>
+</html>
