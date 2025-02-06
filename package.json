@@ -1,0 +1,14 @@
+{
+  "name": "ticket",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/KavishkaRathnayake/Highway-Entrance-System.git",
+  "author": "Kavishka Rathnayake <medhangakavishka06@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^34.0.2"
+  },
+  "scripts": {
+    "start": "electron ."
+  }
+}
