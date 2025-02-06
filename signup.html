@@ -1,0 +1,126 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+    Smart Parking Ticketing - SignUp 
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <script>
+   // Function to validate the password
+        function validateForm(event) {
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm_password").value;
+            const errorMessage = document.getElementById("error-message");
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                event.preventDefault(); // Prevent form submission
+                errorMessage.textContent = "Passwords do not match!";
+                return false;
+            }
+
+            // If passwords match, allow form submission
+            errorMessage.textContent = ""; // Clear error message
+            return true;
+        }
+  </script>
+ </head>
+ <body class="bg-gray-100">
+  <div class="flex items-center justify-center min-h-screen">
+   <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-screen-lg flex flex-col md:flex-row">
+    <div class="md:w-1/2 md:pr-8">
+     <h1 class="text-3xl font-bold mb-2">
+        Smart Parking Ticketing
+     </h1>
+     <p class="text-gray-600 mb-6">
+      Sign up into Admin account
+     </p>
+     <form action="signup.php" method="POST" onsubmit="return validateForm(event)">
+      <!-- This points to signup.php -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+       <div>
+        <label class="block text-gray-700">
+         First Name :
+        </label>
+        <input class="w-full mt-1 p-2 border rounded-md bg-gray-100" name="first_name" placeholder="Enter your First name.." required="" type="text"/>
+       </div>
+       <div>
+        <label class="block text-gray-700">
+         Last Name :
+        </label>
+        <input class="w-full mt-1 p-2 border rounded-md bg-gray-100" name="last_name" placeholder="Enter your Last name.." required="" type="text"/>
+       </div>
+       <div>
+        <label class="block text-gray-700">
+         Email Id :
+        </label>
+        <input class="w-full mt-1 p-2 border rounded-md bg-gray-100" id="email" name="email" placeholder="info@xyz.com" required="" type="email"/>
+        <p class="text-red-500 mt-1" id="email-error">
+         <?php if (isset($_GET['email_error'])) echo htmlspecialchars($_GET['email_error']); ?>
+        </p>
+        <!-- Error message for existing email -->
+       </div>
+       <div>
+        <label class="block text-gray-700">
+         Mobile No. :
+        </label>
+        <input class="w-full mt-1 p-2 border rounded-md bg-gray-100" name="mobile_no" placeholder="+94 71-4862389" required="" type="text"/>
+       </div>
+       <div>
+        <label class="block text-gray-700">
+         Password :
+        </label>
+        <input class="w-full mt-1 p-2 border rounded-md bg-gray-100" id="password" name="password" placeholder="xxxxxxxxxx" required="" type="password"/>
+       </div>
+       <div>
+        <label class="block text-gray-700">
+         Confirm Password :
+        </label>
+        <input class="w-full mt-1 p-2 border rounded-md bg-gray-100" id="confirm_password" name="confirm_password" placeholder="xxxxxxxxxx" required="" type="password"/>
+        <p class="text-red-500 mt-1" id="error-message">
+        </p>
+        <!-- Error message for password mismatch -->
+       </div>
+      </div>
+      <div class="mt-4">
+       <label class="block text-gray-700">
+        Entrance Location:
+       </label>
+       <select class="w-full mt-1 p-2 border rounded-md bg-gray-100" name="entrance_location" required="">
+        <option disabled="" selected="" value="">
+         Location
+        </option>
+        <option>
+            Sigiriya Rock Vehicle Parking area
+        </option>
+        <option>
+            Hemas Hospital -  Wattala
+        </option>
+        <option>
+            Sri Maha Bodhi Vehicle Park - Eastern Entrance
+        </option>
+        <option>
+            Riverston Vehical park
+        </option>
+       </select>
+      </div>
+      <div class="flex mt-6">
+       <button class="bg-green-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-700" type="submit">
+        Sign up
+       </button>
+       <button class="ml-4 bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-md shadow-md hover:bg-gray-100" type="reset">
+        Clear
+       </button>
+      </div>
+     </form>
+    </div>
+    <div class="md:w-1/2 mt-8 md:mt-0">
+     <img alt="Vehicle parking ticket with QR code and parking details" class="rounded-lg shadow-md" height="800" src="https://storage.googleapis.com/a1aa/image/ougQb3aTtqq0rlq6OsFb956EgkeJpXJkyT7jp0lSyr0.jpg" width="600"/>
+    </div>
+   </div>
+  </div>
+ </body>
+</html>
