@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Dashboard</title>
+</head>
+<body class="font-['Inter'] bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="hidden md:flex w-64 flex-col bg-white border-r border-gray-200">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold text-gray-800">Dashboard</h2>
+            </div>
+            <nav class="flex-1 px-4 space-y-1">
+                <a href="#" class="flex items-center px-4 py-3 text-gray-700 bg-gray-100 rounded-lg group">
+                    <span class="text-sm font-medium">Home</span>
+                </a>
+                <a href="http://localhost/Number%20Plate%20System/profile.html" class="flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 group">
+                    <span class="text-sm font-medium">Profile</span>
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 group">
+                    <span class="text-sm font-medium">Settings</span>
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 group">
+                    <span class="text-sm font-medium">Support</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Container -->
+        <div class="flex-1 flex flex-col">
+            <!-- Top Navigation -->
+            <header class="bg-white border-b border-gray-200">
+                <div class="px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-16">
+                        <div class="flex items-center">
+                            <span class="text-lg font-semibold text-gray-800">Welcome, Kavishka</span>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span id="datetime" class="text-sm text-gray-500"></span>
+                            <a href="dashboard.php?logout=true" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area with Flex Grow -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <!-- Video Stream Section -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 mb-8" id="videoFeedContainer" style="display: none;">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Live Camera Feed</h3>
+                    <div class="flex justify-center">
+                        <!-- Video stream will be inserted here dynamically -->
+                        <img id="videoFeed" src="" alt="Live Video Feed" class="w-full max-w-4xl">
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                        <div class="flex flex-col">
+                            <dt class="text-sm font-medium text-gray-500">Total Tickets Issued</dt>
+                            <dd class="mt-1 text-3xl font-semibold text-gray-900">150</dd>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                        <div class="flex flex-col">
+                            <dt class="text-sm font-medium text-gray-500">Pending Requests</dt>
+                            <dd class="mt-1 text-3xl font-semibold text-gray-900">5</dd>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                        <div class="flex flex-col">
+                            <dt class="text-sm font-medium text-gray-500">Feedback Received</dt>
+                            <dd class="mt-1 text-3xl font-semibold text-gray-900">10</dd>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ticket Issuance Section -->
+                <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-200">
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <button id="issueTicketBtn" 
+                                class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                onclick="issueTicket()">
+                            Issue Ticket
+                        </button>
+
+                         <!-- New Button below Issue Ticket -->
+        <button id="newButton" 
+        class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        onclick="handleNewButtonClick()">
+    New Action Button
+</button>
+                    </div>
+                </div>
+            
+            </main>
+
+            <!-- PDF Modal -->
+            <div id="pdfModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50 hidden">
+                <div class="bg-white p-8 rounded-xl max-w-3xl w-full">
+                    <button onclick="closeModal()" class="absolute top-2 right-2 text-red-500 text-2xl">&times;</button>
+                    <iframe src="http://127.0.0.1:5000/static/ticket.png" width="100%" height="600px"></iframe>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="bg-white py-4 border-t border-gray-200">
+                <div class="container mx-auto flex flex-col md:flex-row justify-between items-center px-6 space-y-4 md:space-y-0">
+                    <div class="text-gray-700">
+                        <B>Smart Parking Ticketing</B>
+                    </div>
+                    <nav class="space-x-4">
+                        <a class="text-gray-700 hover:underline" href="#">Contact</a>
+                        <a class="text-gray-700 hover:underline" href="#">Terms of Use</a>
+                        <a class="text-gray-700 hover:underline" href="#">Privacy Policy</a>
+                        <a class="text-gray-700 hover:underline" href="#">FAQ</a>
+                    </nav>
+                    <div class="space-x-4">
+                        <a class="text-gray-700 hover:text-gray-900" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="text-gray-700 hover:text-gray-900" href="#"><i class="fab fa-instagram"></i></a>
+                        <a class="text-gray-700 hover:text-gray-900" href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+ function issueTicket() {
+    const videoFeedContainer = document.getElementById("videoFeedContainer");
+    const videoFeed = document.getElementById("videoFeed");
+
+    // Show video feed for 10 seconds
+    videoFeedContainer.style.display = "block";
+    videoFeed.src = "http://127.0.0.1:5000/video_feed";
+
+    setTimeout(function () {
+        // Hide video feed after 10 seconds
+        videoFeedContainer.style.display = "none";
+
+        // Automatically click the new button after the video feed closes
+        handleNewButtonClick();
+    }, 10000); // 10 seconds
+}
+
+// New Button Click Handler
+function handleNewButtonClick() {
+    // Show the modal containing the PDF
+    document.getElementById("pdfModal").classList.remove("hidden");
+}
+
+function closeModal() {
+    // Close the modal
+    document.getElementById("pdfModal").classList.add("hidden");
+}
+
+    function updateTime() {
+        const datetimeElement = document.getElementById("datetime");
+        const now = new Date();
+
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const date = now.toLocaleDateString();
+
+        // Display date in the format: "Date: YYYY-MM-DD, Time: HH:MM"
+        datetimeElement.textContent = `Date: ${date}, Time: ${hours}:${minutes}`;
+    }
+
+    // Update the time every minute
+    setInterval(updateTime, 60000);
+
+    // Initialize time immediately when the page loads
+    updateTime();
+    </script>
+</body>
+</html>
