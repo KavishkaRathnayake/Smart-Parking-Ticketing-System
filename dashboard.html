@@ -38,7 +38,7 @@
                 <div class="px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center justify-between h-16">
                         <div class="flex items-center">
-                            <span class="text-lg font-semibold text-gray-800">Welcome, Kavishka</span>
+                            <span class="text-lg font-semibold text-gray-800">Welcome, User</span>
                         </div>
                         <div class="flex items-center space-x-4">
                             <span id="datetime" class="text-sm text-gray-500"></span>
@@ -91,25 +91,9 @@
                                 onclick="issueTicket()">
                             Issue Ticket
                         </button>
-
-                         <!-- New Button below Issue Ticket -->
-        <button id="newButton" 
-        class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        onclick="handleNewButtonClick()">
-    New Action Button
-</button>
                     </div>
                 </div>
-            
             </main>
-
-            <!-- PDF Modal -->
-            <div id="pdfModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50 hidden">
-                <div class="bg-white p-8 rounded-xl max-w-3xl w-full">
-                    <button onclick="closeModal()" class="absolute top-2 right-2 text-red-500 text-2xl">&times;</button>
-                    <iframe src="http://127.0.0.1:5000/static/ticket.png" width="100%" height="600px"></iframe>
-                </div>
-            </div>
 
             <!-- Footer -->
             <footer class="bg-white py-4 border-t border-gray-200">
@@ -134,51 +118,54 @@
     </div>
 
     <script>
- function issueTicket() {
-    const videoFeedContainer = document.getElementById("videoFeedContainer");
-    const videoFeed = document.getElementById("videoFeed");
+        function issueTicket() {
+            // Display video feed container and start streaming
+            const videoFeedContainer = document.getElementById("videoFeedContainer");
+            const videoFeed = document.getElementById("videoFeed");
 
-    // Show video feed for 10 seconds
-    videoFeedContainer.style.display = "block";
-    videoFeed.src = "http://127.0.0.1:5000/video_feed";
+            // Show the video feed container
+            videoFeedContainer.style.display = "block";
+            
+            // Set the source for the video feed
+            videoFeed.src = "http://127.0.0.1:5000/video_feed";
 
-    setTimeout(function () {
-        // Hide video feed after 10 seconds
-        videoFeedContainer.style.display = "none";
+            // Wait for 15 seconds before issuing the ticket
+            setTimeout(function() {
+                // Make a request to the backend to generate the ticket PDF after the delay
+                fetch('http://127.0.0.1:5001/view-ticket')
+                    .then(response => response.blob())
+                    .then(data => {
+                        // Create a link element to trigger the download
+                        const downloadLink = document.createElement('a');
+                        const objectURL = URL.createObjectURL(data);
+                        downloadLink.href = objectURL;
+                        downloadLink.download = "ticket.pdf";
+                        downloadLink.click();
+                        // Optionally, release the object URL after downloading
+                        URL.revokeObjectURL(objectURL);
+                    })
+                    .catch(error => {
+                        console.error('Error issuing ticket:', error);
+                    });
 
-        // Automatically click the new button after the video feed closes
-        handleNewButtonClick();
-    }, 10000); // 10 seconds
-}
+                // Hide the video feed container after 10 seconds
+                setTimeout(function() {
+                    videoFeedContainer.style.display = "none";
 
-// New Button Click Handler
-function handleNewButtonClick() {
-    // Show the modal containing the PDF
-    document.getElementById("pdfModal").classList.remove("hidden");
-}
-
-function closeModal() {
-    // Close the modal
-    document.getElementById("pdfModal").classList.add("hidden");
-}
-
-    function updateTime() {
-        const datetimeElement = document.getElementById("datetime");
-        const now = new Date();
-
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const date = now.toLocaleDateString();
-
-        // Display date in the format: "Date: YYYY-MM-DD, Time: HH:MM"
-        datetimeElement.textContent = `Date: ${date}, Time: ${hours}:${minutes}`;
-    }
-
-    // Update the time every minute
-    setInterval(updateTime, 60000);
-
-    // Initialize time immediately when the page loads
-    updateTime();
+                    // Stop the camera from the backend
+                    fetch('http://127.0.0.1:5000/stop_camera', {
+                        method: 'POST',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);  // Log response from backend (e.g., success message)
+                    })
+                    .catch(error => {
+                        console.error('Error stopping camera:', error);
+                    });
+                }, 10000); // 10 seconds
+            }, 15000); // 15 seconds delay before issuing ticket
+        }
     </script>
 </body>
 </html>
